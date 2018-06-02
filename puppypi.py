@@ -5,6 +5,8 @@ import time
 import cv2
 import sys
 import imutils
+import RPi.GPIO as GPIO
+import time
 
 # Project Imports
 import puppypi_config
@@ -12,7 +14,7 @@ import puppypi_util
 import puppypi_servo
 import puppypi_video
 import puppypi_aws
-
+import puppypi_button
 
 
 def main():
@@ -24,6 +26,7 @@ def main():
     parser.add_argument("--videofile", help="pre recorded video file")
     parser.add_argument("--aws", help="test AWS")
     parser.add_argument("-v", "--verbose", help="increase output verbosity", action="store_true")
+    parser.add_argument("-b", "--button", help="wait for button press", action="store_true")
     parser.add_argument("--noservo", help="surpress the servo", action="store_true")
     parser.add_argument("--livevideo", help="live video", action="store_true")
     parser.add_argument("--servodemo", help="demonstrate the servo", action="store_true")
@@ -38,10 +41,15 @@ def main():
         puppypi_config.servousage = False
         puppypi_util.printmsg("Servo turned off")
 
+    
+
     if (args.livevideo):
         puppypi_servo.servo_on()
         puppypi_video.process_livevideo()
         puppypi_servo.servo_off()
+
+    elif (args.button):
+        puppypi_button.do_button()
 
     elif (args.aws):
         puppypi_aws.mainAWS(args.aws)

@@ -8,6 +8,7 @@ file_cascPath='haarcascade_frontalface_alt2.xml'
 
 gpio_x=18
 gpio_y=4
+gpio_button=2
 
 x_min=600
 x_max=2400

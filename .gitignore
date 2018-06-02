@@ -6,3 +6,6 @@ __pycache__/
 *.xml
 *.swp
 *.jpg
+*.json
+*.mp3
+tmp/*

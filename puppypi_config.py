@@ -2,6 +2,7 @@
 verbosemode=False
 servousage=True
 showvideoframe=False
+novideo=False
 
 # Reference from https://github.com/opencv/opencv/tree/master/data/haarcascades
 file_cascPath='haarcascade_frontalface_alt2.xml'

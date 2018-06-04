@@ -31,11 +31,13 @@ def main():
     parser.add_argument("--livevideo", help="live video", action="store_true")
     parser.add_argument("--servodemo", help="demonstrate the servo", action="store_true")
     parser.add_argument("--showvideoframe", help="Display a video frame via XWindows", action="store_true")
+    parser.add_argument("--novideo", help="Surpress a video frame via XWindows", action="store_true")
     
     args = parser.parse_args()
 
     puppypi_config.verbosemode= args.verbose
     puppypi_config.showvideoframe= args.showvideoframe
+    puppypi_config.novideo= args.novideo
 
     if args.noservo:
         puppypi_config.servousage = False

@@ -86,7 +86,7 @@ def process_frame(faceCascade, frame, alwaysShowFrame):
         if (delta_x>ignore_threshold or delta_x<-1*ignore_threshold or delta_y>ignore_threshold or delta_y<-1*ignore_threshold):
             puppypi_servo.servo_delta(delta_x,delta_y)
 
-    if (alwaysShowFrame or facesfound > 0):
+    if (not puppypi_config.novideo) and (alwaysShowFrame or facesfound > 0):
         cv2.imshow('frame',frame)
         key = cv2.waitKey(1) & 0xFF # wait until rendered
 

@@ -26,7 +26,8 @@ def main():
     parser.add_argument("--videofile", help="pre recorded video file")
     parser.add_argument("--aws", help="test AWS")
     parser.add_argument("-v", "--verbose", help="increase output verbosity", action="store_true")
-    parser.add_argument("-b", "--button", help="wait for button press", action="store_true")
+    parser.add_argument("-b", "--button", help="wait for external button press", action="store_true")
+    parser.add_argument("-db", "--debugbutton", help="print a debug message on PCB button press", action="store_true")
     parser.add_argument("--noservo", help="surpress the servo", action="store_true")
     parser.add_argument("--livevideo", help="live video", action="store_true")
     parser.add_argument("--servodemo", help="demonstrate the servo", action="store_true")
@@ -42,8 +43,6 @@ def main():
     if args.noservo:
         puppypi_config.servousage = False
         puppypi_util.printmsg("Servo turned off")
-
-    
 
     if (args.livevideo):
         puppypi_servo.servo_on()
@@ -71,6 +70,8 @@ def main():
         puppypi_servo.servo_demo()
         puppypi_servo.servo_off()
 
+    elif (args.debugbutton):
+        puppypi_button.do_button_debug()
 
 
 

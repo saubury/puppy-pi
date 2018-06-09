@@ -32,6 +32,7 @@ def process_video(file_video):
 
 def process_livevideo():
     puppypi_util.printmsg('Live Video source')
+    StartTime = time.time()
 
     puppypi_servo.servo_centre()
     AwayFromCentre = False
@@ -51,6 +52,12 @@ def process_livevideo():
     # capture frames from the camera
     FaceLastSeen = time.time()
     for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True):
+        if (time.time() - StartTime > 6):
+            puppypi_util.printmsg("Finished timeout of servo tracking")
+            puppypi_servo.servo_centre()
+            camera.close() 
+            return 
+
         image = frame.array
         wasFaceFound = process_frame(faceCascade, image, True)
         rawCapture.truncate(0)

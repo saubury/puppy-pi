@@ -8,6 +8,7 @@ import imutils
 import puppypi_config
 import puppypi_util
 import puppypi_servo
+import puppypi_button
 
 capture_setup_x=320
 capture_setup_y=240
@@ -32,7 +33,6 @@ def process_video(file_video):
 
 def process_livevideo():
     puppypi_util.printmsg('Live Video source')
-    StartTime = time.time()
 
     puppypi_servo.servo_centre()
     AwayFromCentre = False
@@ -52,8 +52,8 @@ def process_livevideo():
     # capture frames from the camera
     FaceLastSeen = time.time()
     for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True):
-        if (time.time() - StartTime > 6):
-            puppypi_util.printmsg("Finished timeout of servo tracking")
+        if puppypi_button.button_is_yellow():
+            puppypi_util.printmsg("Button presset to stop tracking")
             puppypi_servo.servo_centre()
             camera.close() 
             return 

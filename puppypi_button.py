@@ -5,47 +5,38 @@ import puppypi_aws
 import puppypi_servo
 import puppypi_video
 import RPi.GPIO as GPIO
+import datetime
 import time
 
-
-def my_callback_yellow():  
-    print "****************************"
-    print "Event - yellow"
-    print "****************************"
-    puppypi_servo.servo_on()
-    puppypi_video.process_livevideo()
-    puppypi_servo.servo_off()
-    time.sleep(2)
-
-def my_callback_green():  
-    print "****************************"
-    print "Event - green"
-    print "****************************"
-    file_string='./tmp/demo-file'
-    puppypi_aws.mainAWS(file_string)
-    time.sleep(2)
-
-def do_button():
-    puppypi_util.printmsg("Button Press Mode")
+def button_setup():
     GPIO.setmode(GPIO.BCM)
     GPIO.setup(puppypi_config.gpio_button_green, GPIO.IN, pull_up_down=GPIO.PUD_UP)
     GPIO.setup(puppypi_config.gpio_button_yellow, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
-    #GPIO.add_event_detect(puppypi_config.gpio_button_yellow, GPIO.RISING, callback=my_callback_yellow)  
-    #GPIO.add_event_detect(puppypi_config.gpio_button_green, GPIO.RISING, callback=my_callback_green)  
+def button_is_green():
+    return GPIO.input(puppypi_config.gpio_button_green) == False
 
+def button_is_yellow():
+    return GPIO.input(puppypi_config.gpio_button_yellow) == False
+
+def do_button():
+    puppypi_util.printmsg("Button Press Mode")
+    button_setup()
 
     while True:
         time.sleep(0.2)
 
-        if GPIO.input(puppypi_config.gpio_button_green) == False:
-            print('Button Pressed Green')
-            my_callback_green()
+        if button_is_yellow():
+            print('Button Pressed Yellow')
+            puppypi_servo.servo_on()
+            puppypi_video.process_livevideo()
+            puppypi_servo.servo_off()
             time.sleep(0.2)
 
-        if GPIO.input(puppypi_config.gpio_button_yellow) == False:
-            print('Button Pressed Yellow')
-            my_callback_yellow()
+        if button_is_green():
+            print('Button Pressed Green')
+            file_string='./tmp/{}'.format(datetime.datetime.today().strftime('%Y%m%d-%H%M%S'))
+            puppypi_aws.mainAWS(file_string)
             time.sleep(0.2)
 
 def do_button_debug():

@@ -18,7 +18,7 @@ import puppypi_button
 
 
 def main():
-    parser = argparse.ArgumentParser(description='Face processing puppy bear.')
+    parser = argparse.ArgumentParser(description='Face processing puppy.')
 
 
     parser.add_argument("-x", "--servo_x", type=int, help="servo x setting")

@@ -51,7 +51,10 @@ def takePhotoAndProcess(namebase):
 		with open(file_json, 'w') as outfile:
 			json.dump(response, outfile)
 
-	finalstring = processJSON(file_json)
+        try:
+   	    finalstring = processJSON(file_json)
+        except (IndexError):
+            finalstring = 'No face found'
 	return finalstring
 
 

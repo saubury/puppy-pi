@@ -35,7 +35,7 @@ def do_button():
 
         if button_is_green():
             print('Button Pressed Green')
-            file_string='./tmp/{}'.format(datetime.datetime.today().strftime('%Y%m%d-%H%M%S'))
+            file_string='./tmp/snapped_{}'.format(datetime.datetime.today().strftime('%Y%m%d-%H%M%S'))
             puppypi_aws.mainAWS(file_string)
             time.sleep(0.2)
 

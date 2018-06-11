@@ -4,6 +4,7 @@ import time
 import cv2
 import sys
 import imutils
+import datetime
 
 import puppypi_config
 import puppypi_util
@@ -52,11 +53,13 @@ def process_livevideo():
     # capture frames from the camera
     FaceLastSeen = time.time()
     for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True):
-        if puppypi_button.button_is_yellow():
+        if not puppypi_button.button_is_yellow():
             puppypi_util.printmsg("Button presset to stop tracking")
             puppypi_servo.servo_centre()
+            cv2.destroyAllWindows()
             camera.close() 
             return 
+
 
         image = frame.array
         wasFaceFound = process_frame(faceCascade, image, True)
@@ -86,7 +89,8 @@ def process_frame(faceCascade, frame, alwaysShowFrame):
     if facesfound > 0:
         retFaceFound = True
         puppypi_util.printmsg("Found {} faces. x:{}, y{}, z{}".format(len(faces), x+w/2, y+h/2, (w+h)/3))
-        cv2.imwrite('found_face.jpg', frame, [int(cv2.IMWRITE_JPEG_QUALITY), 90])
+        jpg_file='./tmp/face_found_{}.jpg'.format(datetime.datetime.today().strftime('%Y%m%d-%H%M%S'))
+        cv2.imwrite(jpg_file, frame, [int(cv2.IMWRITE_JPEG_QUALITY), 90])
         delta_x=(x+w/2-(capture_setup_x/2)) * - delta_factor
         delta_y=(y+h/2-(capture_setup_y/2)) *   delta_factor
         puppypi_util.printmsg('Delta x:{} y:{}'.format(delta_x,delta_y))
